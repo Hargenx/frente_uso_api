@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { criarTarefa } from '../services/api'; // Ajuste o serviço de acordo
+import '../style/style.css';
 
 function FormularioTarefa() {
   const [titulo, setTitulo] = useState('');
@@ -19,7 +20,7 @@ function FormularioTarefa() {
 
   return (
     <div>
-      <h2>Adicionar Tarefa</h2>
+      <h2>❤️</h2>
       <form onSubmit={handleSubmit}>
         <input
           type="text"

@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { getTarefas, apagarTarefa } from '../services/api';
+import '../style/style.css';
 
 function ListaTarefa() {
   const [tarefas, setTarefas] = useState([]);
@@ -19,12 +20,12 @@ function ListaTarefa() {
     }
   };
 
-  const handleDeleteClick = (tarefa) => {
+  const apagaraTarefa = (tarefa) => {
     setModalVisible(true);
     setTarefaSelecionada(tarefa);
   };
 
-  const handleConfirmDelete = async () => {
+  const confirmarTarefaApagada = async () => {
     if (tarefaSelecionada) {
       try {
         await apagarTarefa(tarefaSelecionada.id);
@@ -48,20 +49,33 @@ function ListaTarefa() {
       <h2>Lista de Tarefas</h2>
       <ul>
         {tarefas.map((tarefa) => (
-          <li key={tarefa.id} onClick={() => handleDeleteClick(tarefa)}>
+          <li key={tarefa.id} onClick={() => apagaraTarefa(tarefa)}>
             <span>{tarefa.titulo}</span>
-            <span>{tarefa.feito ? ' - Concluída' : ' - Pendente'}</span>
+            <span>{'\n' + (tarefa.feito ?  ' Concluída ' : ' Pendente ')}</span>
           </li>
         ))}
       </ul>
 
       {/* Modal de Confirmação */}
       {modalVisible && (
-        <div>
+        <div className="modal-overlay" onClick={handleCancelDelete}>
+        <div className="modal-content">
           <div>Deseja apagar a tarefa "{tarefaSelecionada?.titulo}"?</div>
-          <button onClick={handleConfirmDelete}>Sim</button>
-          <button onClick={handleCancelDelete}>Cancelar</button>
+          <button className='botao_confirmar' onClick={confirmarTarefaApagada}>Sim</button>
+          <button className='botao_cancelar' onClick={handleCancelDelete}>Cancelar</button>
         </div>
+      </div>
+      )}
+
+      {/* Modal de Alterar */}
+      {modalVisible && (
+        <div className="modal-overlay" onClick={handleCancelDelete}>
+        <div className="modal-content">
+          <div>Foi feita a tarefa: "{tarefaSelecionada?.titulo}"?</div>
+          <button className='botao_confirmar' onClick={confirmarTarefaApagada}>Sim</button>
+          <button className='botao_cancelar' onClick={handleCancelDelete}>Não</button>
+        </div>
+      </div>
       )}
     </div>
   );
