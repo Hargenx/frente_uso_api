@@ -39,7 +39,7 @@ function ListaTarefa() {
     }
   };
 
-  const handleCancelDelete = () => {
+  const cancelarTarefaApagada = () => {
     setModalVisible(false);
     setTarefaSelecionada(null);
   };
@@ -58,22 +58,22 @@ function ListaTarefa() {
 
       {/* Modal de Confirmação */}
       {modalVisible && (
-        <div className="modal-overlay" onClick={handleCancelDelete}>
+        <div className="modal-overlay" onClick={cancelarTarefaApagada}>
         <div className="modal-content">
           <div>Deseja apagar a tarefa "{tarefaSelecionada?.titulo}"?</div>
           <button className='botao_confirmar' onClick={confirmarTarefaApagada}>Sim</button>
-          <button className='botao_cancelar' onClick={handleCancelDelete}>Cancelar</button>
+          <button className='botao_cancelar' onClick={cancelarTarefaApagada}>Cancelar</button>
         </div>
       </div>
       )}
 
       {/* Modal de Alterar */}
       {modalVisible && (
-        <div className="modal-overlay" onClick={handleCancelDelete}>
+        <div className="modal-overlay" onClick={cancelarTarefaApagada}>
         <div className="modal-content">
           <div>Foi feita a tarefa: "{tarefaSelecionada?.titulo}"?</div>
           <button className='botao_confirmar' onClick={confirmarTarefaApagada}>Sim</button>
-          <button className='botao_cancelar' onClick={handleCancelDelete}>Não</button>
+          <button className='botao_cancelar' onClick={cancelarTarefaApagada}>Não</button>
         </div>
       </div>
       )}
