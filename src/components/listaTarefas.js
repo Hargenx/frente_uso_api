@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { getTarefas, apagarTarefa } from '../services/api';
+import { getTarefas, apagarTarefa, atualizarTarefa } from '../services/api';
 import '../style/style.css';
 
 function ListaTarefa() {
@@ -44,6 +44,24 @@ function ListaTarefa() {
     setTarefaSelecionada(null);
   };
 
+
+  const alterarTarefa = async (tarefa) => {
+    try {
+      const dadosAtualizados = {
+        feito: !tarefa.feito, // Inverte o estado entre 'pendente' e 'concluída'
+      };
+      // Faz a requisição para atualizar a tarefa
+      await atualizarTarefa(tarefa.id, dadosAtualizados);
+      // Atualiza a lista de tarefas após a alteração
+      fetchTarefas();
+    } catch (error) {
+      console.error('Erro ao alterar a tarefa:', error);
+    }
+  };
+
+
+
+
   return (
     <div>
       <h2>Lista de Tarefas</h2>
@@ -51,7 +69,16 @@ function ListaTarefa() {
         {tarefas.map((tarefa) => (
           <li key={tarefa.id} onClick={() => apagaraTarefa(tarefa)}>
             <span>{tarefa.titulo}</span>
-            <span>{'\n' + (tarefa.feito ?  ' Concluída ' : ' Pendente ')}</span>
+            <button className={`botao-alterar ${tarefa.feito ? 'concluida' : 'pendente'}`} onClick={(e) => {
+              e.stopPropagation();
+              if (tarefa && typeof tarefa.feito !== 'undefined') {
+                alterarTarefa(tarefa);
+              } else {
+                console.error('Tarefa inválida:', tarefa);
+              }
+            }}>
+              {tarefa.feito ? 'Concluída' : 'Pendente'}
+            </button>
           </li>
         ))}
       </ul>
@@ -59,24 +86,14 @@ function ListaTarefa() {
       {/* Modal de Confirmação */}
       {modalVisible && (
         <div className="modal-overlay" onClick={cancelarTarefaApagada}>
-        <div className="modal-content">
-          <div>Deseja apagar a tarefa "{tarefaSelecionada?.titulo}"?</div>
-          <button className='botao_confirmar' onClick={confirmarTarefaApagada}>Sim</button>
-          <button className='botao_cancelar' onClick={cancelarTarefaApagada}>Cancelar</button>
+          <div className="modal-content">
+            <div>Deseja apagar a tarefa "{tarefaSelecionada?.titulo}"?</div>
+            <button className='botao_confirmar' onClick={confirmarTarefaApagada}>Sim</button>
+            <button className='botao_cancelar' onClick={cancelarTarefaApagada}>Cancelar</button>
+          </div>
         </div>
-      </div>
       )}
 
-      {/* Modal de Alterar */}
-      {modalVisible && (
-        <div className="modal-overlay" onClick={cancelarTarefaApagada}>
-        <div className="modal-content">
-          <div>Foi feita a tarefa: "{tarefaSelecionada?.titulo}"?</div>
-          <button className='botao_confirmar' onClick={confirmarTarefaApagada}>Sim</button>
-          <button className='botao_cancelar' onClick={cancelarTarefaApagada}>Não</button>
-        </div>
-      </div>
-      )}
     </div>
   );
 }

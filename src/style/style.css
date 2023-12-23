@@ -48,7 +48,18 @@ body {
     font-size: 14px;
     cursor: pointer;
   }
-  
+
+  .botao-alterar{
+    background-color: #30918c;
+  }
+
+  .botao-alterar:hover{
+    background-color: #7c7dab;
+  }
+
+    li:hover .button-interno {
+    pointer-events: none;
+  }
   /* Estilos do modal */
   .modal {
     display: none; /* Inicia oculto */
@@ -88,6 +99,17 @@ body {
     background-color: #f44336;
     color: white;
   }
+
+  .concluida {
+    background-color: green;
+    color: white;
+  }
+  
+  .pendente {
+    background-color: yellow;
+    color: black;
+  }
+  
   
   /* Estilo overlay para o modal */
   .modal-overlay {
